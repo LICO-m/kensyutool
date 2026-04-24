@@ -1,0 +1,437 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.lp{width:100%;font-family:var(--font-sans);color:var(--color-text-primary);}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);}
+.nav-logo{font-size:14px;font-weight:500;}
+.nav-logo span{font-size:11px;color:var(--color-text-tertiary);font-weight:400;margin-left:4px;}
+.nav-links{display:flex;gap:16px;}
+.nav-links a{font-size:12px;color:var(--color-text-secondary);text-decoration:none;}
+.nav-cta{font-size:12px;font-weight:500;padding:7px 16px;border-radius:var(--border-radius-md);background:#185FA5;color:#E6F1FB;border:none;cursor:pointer;}
+.btn-primary{font-size:13px;font-weight:500;padding:11px 22px;border-radius:var(--border-radius-md);background:#185FA5;color:#E6F1FB;border:none;cursor:pointer;}
+.btn-ghost{font-size:13px;font-weight:500;padding:11px 22px;border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary);cursor:pointer;}
+.sec{padding:44px 24px;border-bottom:0.5px solid var(--color-border-tertiary);}
+.sec-eyebrow{font-size:11px;font-weight:500;color:#185FA5;letter-spacing:0.06em;margin-bottom:8px;}
+.sec-h{font-size:20px;font-weight:500;line-height:1.4;margin-bottom:10px;}
+.sec-sub{font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:24px;}
+
+.hero{padding:48px 24px 40px;text-align:center;border-bottom:0.5px solid var(--color-border-tertiary);}
+.hero-eyebrow{font-size:11px;font-weight:500;color:#185FA5;letter-spacing:0.06em;margin-bottom:14px;}
+.hero-h{font-size:24px;font-weight:500;line-height:1.35;margin-bottom:12px;}
+.hero-h em{font-style:normal;color:#185FA5;}
+.hero-sub{font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;}
+.hero-note{font-size:11px;color:var(--color-text-tertiary);margin-bottom:28px;}
+
+.video-wrap{max-width:540px;margin:0 auto;border-radius:var(--border-radius-lg);overflow:hidden;border:0.5px solid var(--color-border-tertiary);background:#0C1929;}
+.video-thumb{position:relative;width:100%;}
+.video-screen{background:#0C1929;padding:16px 16px 8px;}
+.v-topbar{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+.v-dot{width:7px;height:7px;border-radius:50%;}
+.v-label{font-size:10px;color:#5F7A99;margin-left:4px;}
+.v-task-add{background:#1A2D45;border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.v-plus{width:20px;height:20px;border-radius:4px;background:#185FA5;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.v-plus-t{color:#E6F1FB;font-size:14px;line-height:1;}
+.v-input{font-size:11px;color:#8BAAC4;}
+.v-tasks{display:flex;flex-direction:column;gap:5px;margin-bottom:8px;}
+.v-task{background:#1A2D45;border-radius:var(--border-radius-md);padding:7px 10px;display:flex;align-items:center;gap:7px;}
+.v-st{font-size:9px;font-weight:500;padding:2px 6px;border-radius:99px;white-space:nowrap;}
+.v-st-d{background:#0F4A36;color:#5DCAA5;}
+.v-st-w{background:#4A3200;color:#EF9F27;}
+.v-st-n{background:#1A2D45;color:#5F7A99;border:0.5px solid #2A3D55;}
+.v-tname{font-size:10px;color:#B5CFEA;flex:1;}
+.v-av{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;}
+.v-comment{background:#1E3A55;border-radius:var(--border-radius-md);padding:8px 10px;margin-bottom:6px;}
+.v-comment-row{display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;}
+.v-comment-row:last-child{margin-bottom:0;}
+.v-cbubble{background:#243F5A;border-radius:6px;padding:5px 8px;flex:1;}
+.v-ctext{font-size:10px;color:#8BAAC4;line-height:1.5;}
+.v-cname{font-size:9px;color:#5F7A99;margin-top:3px;}
+.v-cbubble-b{background:#185FA5;border-radius:6px;padding:5px 8px;}
+.v-ctext-b{font-size:10px;color:#E6F1FB;line-height:1.5;}
+.video-overlay{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;background:rgba(0,0,0,0.55);margin:0 16px 16px;border-radius:var(--border-radius-md);}
+.play-circle{width:44px;height:44px;border-radius:50%;background:#185FA5;display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.play-tri{width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:16px solid #E6F1FB;margin-left:4px;}
+.video-caption{font-size:11px;color:#8BAAC4;text-align:center;line-height:1.6;}
+.video-caption strong{color:#B5CFEA;font-weight:500;}
+
+.prob-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+.prob-card{border-radius:var(--border-radius-lg);padding:16px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);}
+.prob-num{font-size:11px;font-weight:500;color:#854F0B;margin-bottom:8px;}
+.prob-q{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px;line-height:1.5;}
+.prob-a{font-size:12px;color:var(--color-text-secondary);line-height:1.6;}
+
+.bridge{text-align:center;padding:20px 24px;background:#E6F1FB;border-bottom:0.5px solid #B5D4F4;}
+.bridge-t{font-size:15px;font-weight:500;color:#0C447C;}
+.bridge-s{font-size:12px;color:#185FA5;margin-top:4px;}
+
+.sol-flow{display:flex;flex-direction:column;gap:0;margin-top:4px;}
+.sol-row-item{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;gap:0;margin-bottom:12px;}
+.sol-problem{background:#FAEEDA;border-radius:var(--border-radius-lg);padding:14px 16px;border:0.5px solid #FAC775;}
+.sol-solution{background:#E1F5EE;border-radius:var(--border-radius-lg);padding:14px 16px;border:0.5px solid #9FE1CB;}
+.sol-arrow{display:flex;align-items:center;justify-content:center;}
+.sol-p-label{font-size:10px;font-weight:500;color:#854F0B;margin-bottom:5px;}
+.sol-s-label{font-size:10px;font-weight:500;color:#085041;margin-bottom:5px;}
+.sol-illus{width:36px;height:36px;margin-bottom:8px;}
+.sol-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:4px;}
+.sol-p-title{color:#633806;}
+.sol-s-title{color:#0F6E56;}
+.sol-desc{font-size:11px;line-height:1.6;}
+.sol-p-desc{color:#854F0B;}
+.sol-s-desc{color:#085041;}
+
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
+.feat-card{border-radius:var(--border-radius-lg);padding:16px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);}
+.feat-icon{width:32px;height:32px;border-radius:var(--border-radius-md);background:#E1F5EE;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.feat-icon svg{width:16px;height:16px;}
+.feat-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px;}
+.feat-merit{font-size:11px;font-weight:500;color:#0F6E56;margin-bottom:5px;}
+.feat-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.6;}
+
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+.price-card{border-radius:var(--border-radius-lg);padding:18px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);}
+.price-pop{border:2px solid #185FA5;}
+.price-badge{font-size:11px;font-weight:500;padding:2px 8px;border-radius:99px;background:#E6F1FB;color:#0C447C;display:inline-block;margin-bottom:8px;}
+.price-plan{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;}
+.price-amount{font-size:22px;font-weight:500;color:var(--color-text-primary);line-height:1;}
+.price-unit{font-size:11px;color:var(--color-text-tertiary);margin-top:2px;margin-bottom:12px;}
+.price-line{height:0.5px;background:var(--color-border-tertiary);margin-bottom:10px;}
+.price-item{font-size:12px;color:var(--color-text-secondary);padding:3px 0;display:flex;align-items:center;gap:6px;}
+.chk{width:14px;height:14px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.chk svg{width:8px;height:8px;}
+
+.faq-list{margin-top:4px;}
+.faq-item{border-bottom:0.5px solid var(--color-border-tertiary);padding:14px 0;}
+.faq-q{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px;display:flex;align-items:flex-start;gap:8px;}
+.faq-qmark{font-size:11px;font-weight:500;color:#185FA5;background:#E6F1FB;padding:2px 6px;border-radius:4px;flex-shrink:0;margin-top:1px;}
+.faq-a{font-size:12px;color:var(--color-text-secondary);line-height:1.7;padding-left:28px;}
+
+.inline-cta{text-align:center;padding:28px 24px;border-bottom:0.5px solid var(--color-border-tertiary);}
+.inline-cta-t{font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;}
+
+.cta-final{padding:48px 24px;text-align:center;background:var(--color-background-secondary);}
+.cta-final-h{font-size:20px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px;line-height:1.4;}
+.cta-final-s{font-size:13px;color:var(--color-text-secondary);margin-bottom:24px;line-height:1.8;}
+.cta-group{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.cta-note{font-size:12px;color:var(--color-text-tertiary);}
+.cta-link{font-size:12px;color:#185FA5;margin-top:4px;}
+</style>
+
+<h2 class="sr-only">検収ツール トップページ モック v3</h2>
+<div class="lp">
+
+<div class="nav">
+  <div class="nav-logo">Kenshu <span>検収管理ツール</span></div>
+  <div class="nav-links">
+    <a href="#">機能</a><a href="#">料金</a><a href="#">FAQ</a>
+  </div>
+  <button class="nav-cta">無料で始める</button>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Web制作・制作進行担当者向け</div>
+  <div class="hero-h">修正指示の<em>対応漏れ</em>と<br><em>確認の往復</em>を、なくす。</div>
+  <div class="hero-sub">タスク追加からクライアント承認まで、一画面で完結。スプレッドシートとチャットの二重管理から解放されます。</div>
+  <div class="hero-btns">
+    <button class="btn-primary">無料アカウントを作成する</button>
+    <button class="btn-ghost">▶ デモを見る（30秒）</button>
+  </div>
+  <div class="hero-note">クレジットカード不要・2分で開始</div>
+
+  <div class="video-wrap">
+    <div class="video-screen">
+      <div class="v-topbar">
+        <div class="v-dot" style="background:#F09595;"></div>
+        <div class="v-dot" style="background:#EF9F27;"></div>
+        <div class="v-dot" style="background:#97C459;"></div>
+        <div class="v-label">A社コーポレートサイト — 検収タスク</div>
+      </div>
+      <div class="v-task-add">
+        <div class="v-plus"><div class="v-plus-t">+</div></div>
+        <div class="v-input">「TOPのキャッチコピー修正」を追加中...</div>
+      </div>
+      <div class="v-tasks">
+        <div class="v-task">
+          <div class="v-st v-st-d">完了</div>
+          <div class="v-tname">ファーストビュー 画像差し替え</div>
+          <div class="v-av" style="background:#1A4A7A;color:#85B7EB;">田</div>
+        </div>
+        <div class="v-task">
+          <div class="v-st v-st-w">対応中</div>
+          <div class="v-tname">会社概要 テキスト修正（3箇所）</div>
+          <div class="v-av" style="background:#3A2A00;color:#EF9F27;">鈴</div>
+        </div>
+        <div class="v-task">
+          <div class="v-st v-st-n">未対応</div>
+          <div class="v-tname">SP表示 ナビゲーション崩れ</div>
+          <div class="v-av" style="background:#1A4A7A;color:#85B7EB;">山</div>
+        </div>
+      </div>
+      <div class="v-comment">
+        <div style="font-size:9px;color:#5F7A99;margin-bottom:6px;">コメント — 会社概要 テキスト修正</div>
+        <div class="v-comment-row">
+          <div class="v-av" style="background:#3A2A00;color:#EF9F27;flex-shrink:0;">鈴</div>
+          <div class="v-cbubble">
+            <div class="v-ctext">修正しました。3箇所とも対応済みです。ご確認お願いします。</div>
+            <div class="v-cname">鈴木（担当）</div>
+          </div>
+        </div>
+        <div class="v-comment-row" style="flex-direction:row-reverse;">
+          <div class="v-av" style="background:#1A4A7A;color:#85B7EB;flex-shrink:0;">田</div>
+          <div class="v-cbubble-b">
+            <div class="v-ctext-b">確認しました。OKです。承認します！</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="video-overlay">
+      <div class="play-circle"><div class="play-tri"></div></div>
+      <div class="video-caption"><strong>デモ動画（約30秒）</strong><br>タスク追加 → 担当者への通知 → コメントでやり取り → 承認まで</div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-eyebrow">こんな問題、ありませんか？</div>
+  <div class="sec-h">検収業務の「あるある」<br>心当たりありませんか？</div>
+  <div class="sec-sub">現場で毎回起きているこの状況。実はツール1つで防げます。</div>
+  <div class="prob-grid">
+    <div class="prob-card">
+      <div class="prob-num">問題 01</div>
+      <div class="prob-q">スプレッドシートのどこに書いたか分からなくなる</div>
+      <div class="prob-a">列が増えるたびに「あの修正、どこだっけ？」が発生。</div>
+    </div>
+    <div class="prob-card">
+      <div class="prob-num">問題 02</div>
+      <div class="prob-q">対応済みか未対応か、確認のたびに往復する</div>
+      <div class="prob-a">チャットとシートが別管理で確認コストが二重にかかる。</div>
+    </div>
+    <div class="prob-card">
+      <div class="prob-num">問題 03</div>
+      <div class="prob-q">対応漏れがリリース直前に発覚する</div>
+      <div class="prob-a">誰も確認していなかった修正が、公開後にクレームに。</div>
+    </div>
+  </div>
+</div>
+
+<div class="bridge">
+  <div class="bridge-t">その全部、1つのツールで解決できます。</div>
+  <div class="bridge-s">タスク追加・ステータス管理・クライアント承認まで一画面で完結</div>
+</div>
+
+<div class="sec">
+  <div class="sec-eyebrow">ソリューション</div>
+  <div class="sec-h">課題ごとに、どう解決するか</div>
+  <div class="sec-sub">「なんとなく便利」ではなく、現場の問題に直接対応します。</div>
+  <div class="sol-flow">
+
+    <div class="sol-row-item">
+      <div class="sol-problem">
+        <div class="sol-p-label">課題</div>
+        <svg class="sol-illus" viewBox="0 0 36 36" fill="none">
+          <rect x="4" y="6" width="28" height="24" rx="3" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.2"/>
+          <line x1="4" y1="12" x2="32" y2="12" stroke="#EF9F27" stroke-width="1"/>
+          <rect x="8" y="16" width="6" height="4" rx="1" fill="#FAC775"/>
+          <rect x="16" y="16" width="6" height="4" rx="1" fill="#FAC775"/>
+          <rect x="24" y="16" width="4" height="4" rx="1" fill="#FAC775"/>
+          <rect x="8" y="22" width="8" height="4" rx="1" fill="#FAC775"/>
+          <rect x="18" y="22" width="10" height="4" rx="1" fill="#FAC775"/>
+          <circle cx="28" cy="28" r="6" fill="#E24B4A"/>
+          <line x1="26" y1="28" x2="30" y2="28" stroke="white" stroke-width="1.5"/>
+        </svg>
+        <div class="sol-title sol-p-title">スプレッドシートに埋もれる</div>
+        <div class="sol-desc sol-p-desc">列が増え続け、どこに何があるか分からない状態に</div>
+      </div>
+      <div class="sol-arrow">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="sol-solution">
+        <div class="sol-s-label">解決</div>
+        <svg class="sol-illus" viewBox="0 0 36 36" fill="none">
+          <rect x="4" y="4" width="28" height="28" rx="3" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1.2"/>
+          <rect x="8" y="10" width="20" height="5" rx="2" fill="#9FE1CB"/>
+          <circle cx="11" cy="12.5" r="2" fill="#1D9E75"/>
+          <rect x="8" y="17" width="20" height="5" rx="2" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.8"/>
+          <circle cx="11" cy="19.5" r="2" fill="#EF9F27"/>
+          <rect x="8" y="24" width="20" height="5" rx="2" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.8"/>
+          <circle cx="11" cy="26.5" r="2" fill="#B4B2A9"/>
+        </svg>
+        <div class="sol-title sol-s-title">一覧でステータスが一目瞭然</div>
+        <div class="sol-desc sol-s-desc">全タスクの状態がリアルタイムで見える</div>
+      </div>
+    </div>
+
+    <div class="sol-row-item">
+      <div class="sol-problem">
+        <div class="sol-p-label">課題</div>
+        <svg class="sol-illus" viewBox="0 0 36 36" fill="none">
+          <rect x="3" y="8" width="18" height="13" rx="2" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.2"/>
+          <line x1="6" y1="13" x2="18" y2="13" stroke="#FAC775" stroke-width="1"/>
+          <line x1="6" y1="16" x2="15" y2="16" stroke="#FAC775" stroke-width="1"/>
+          <rect x="15" y="15" width="18" height="13" rx="2" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.2"/>
+          <line x1="18" y1="20" x2="30" y2="20" stroke="#FAC775" stroke-width="1"/>
+          <line x1="18" y1="23" x2="27" y2="23" stroke="#FAC775" stroke-width="1"/>
+          <path d="M12 21l3-3M15 21l-3-3" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="sol-title sol-p-title">チャットとシートが分散</div>
+        <div class="sol-desc sol-p-desc">やり取りと管理が別々で確認コストが二重にかかる</div>
+      </div>
+      <div class="sol-arrow">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="sol-solution">
+        <div class="sol-s-label">解決</div>
+        <svg class="sol-illus" viewBox="0 0 36 36" fill="none">
+          <rect x="4" y="4" width="28" height="28" rx="3" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1.2"/>
+          <rect x="8" y="10" width="20" height="6" rx="2" fill="#9FE1CB"/>
+          <rect x="10" y="19" width="12" height="4" rx="1.5" fill="#5DCAA5"/>
+          <rect x="14" y="25" width="12" height="4" rx="1.5" fill="#1D9E75"/>
+          <circle cx="28" cy="8" r="5" fill="#185FA5"/>
+          <path d="M26 8l1.5 1.5 2.5-2.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <div class="sol-title sol-s-title">タスクにコメントが紐づく</div>
+        <div class="sol-desc sol-s-desc">修正内容とやり取りが同じ場所に集約される</div>
+      </div>
+    </div>
+
+    <div class="sol-row-item">
+      <div class="sol-problem">
+        <div class="sol-p-label">課題</div>
+        <svg class="sol-illus" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="12" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.2"/>
+          <line x1="18" y1="10" x2="18" y2="18" stroke="#E24B4A" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="18" y1="18" x2="23" y2="22" stroke="#E24B4A" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="18" cy="18" r="1.5" fill="#E24B4A"/>
+          <path d="M28 28l-4-4" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="30" cy="30" r="4" fill="#E24B4A"/>
+          <line x1="29" y1="30" x2="31" y2="30" stroke="white" stroke-width="1.2"/>
+          <line x1="30" y1="29" x2="30" y2="31" stroke="white" stroke-width="1.2"/>
+        </svg>
+        <div class="sol-title sol-p-title">対応漏れが直前に発覚</div>
+        <div class="sol-desc sol-p-desc">誰も把握していないタスクが公開後に問題に</div>
+      </div>
+      <div class="sol-arrow">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="sol-solution">
+        <div class="sol-s-label">解決</div>
+        <svg class="sol-illus" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="12" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1.2"/>
+          <path d="M12 18l4 4 8-8" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="10" r="5" fill="#185FA5"/>
+          <path d="M26 10l1.5 1.5 2.5-2.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <div class="sol-title sol-s-title">承認で全完了を確認</div>
+        <div class="sol-desc sol-s-desc">クライアント承認まで完結、抜け漏れゼロで納品</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="inline-cta">
+  <div class="inline-cta-t">課題に共感したら、まず無料で試してみてください。</div>
+  <button class="btn-primary">無料アカウントを作成 — クレジットカード不要</button>
+</div>
+
+<div class="sec">
+  <div class="sec-eyebrow">機能</div>
+  <div class="sec-h">機能じゃなく、<br>「得られる変化」で選んでください</div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="3" stroke="#0F6E56" stroke-width="1.2"/><line x1="8" y1="5" x2="8" y2="11" stroke="#0F6E56" stroke-width="1.2"/><line x1="5" y1="8" x2="11" y2="8" stroke="#0F6E56" stroke-width="1.2"/></svg></div>
+      <div class="feat-title">かんたんタスク登録</div>
+      <div class="feat-merit">→ 修正指示の漏れがなくなる</div>
+      <div class="feat-desc">その場で入力・画像添付・担当者設定。スプレッドシートを開く必要なし。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#0F6E56" stroke-width="1.2"/><path d="M5.5 8l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="feat-title">リアルタイムステータス</div>
+      <div class="feat-merit">→ 確認の往復が不要になる</div>
+      <div class="feat-desc">未対応・対応中・完了を一覧表示。「今どこ？」を聞く必要がなくなる。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h10" stroke="#0F6E56" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="feat-title">タスク紐づきコメント</div>
+      <div class="feat-merit">→ 会話が迷子にならない</div>
+      <div class="feat-desc">修正内容とやり取りが同じ場所に。チャットを探し回る時間がゼロに。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 4h4l-3.5 2.5 1.5 4L8 10l-3.5 2.5 1.5-4L2 6h4z" stroke="#0F6E56" stroke-width="1.2"/></svg></div>
+      <div class="feat-title">クライアント承認フロー</div>
+      <div class="feat-merit">→ メール往復が不要になる</div>
+      <div class="feat-desc">リンクを送るだけ。アカウント不要でクライアントが確認・承認できる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-eyebrow">料金</div>
+  <div class="sec-h">まず無料で試して、<br>必要なら広げてください</div>
+  <div class="price-grid">
+    <div class="price-card">
+      <div class="price-plan">フリー</div>
+      <div class="price-amount">¥0</div>
+      <div class="price-unit">ずっと無料</div>
+      <div class="price-line"></div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#0F6E56" stroke-width="1.2"/></svg></div>3プロジェクトまで</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#0F6E56" stroke-width="1.2"/></svg></div>基本機能すべて</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#0F6E56" stroke-width="1.2"/></svg></div>CC不要で開始</div>
+    </div>
+    <div class="price-card price-pop">
+      <div class="price-badge">人気プラン</div>
+      <div class="price-plan">スタンダード</div>
+      <div class="price-amount">¥2,980</div>
+      <div class="price-unit">/ 月・ユーザーあたり</div>
+      <div class="price-line"></div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#0F6E56" stroke-width="1.2"/></svg></div>プロジェクト無制限</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#0F6E56" stroke-width="1.2"/></svg></div>承認ワークフロー</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#0F6E56" stroke-width="1.2"/></svg></div>優先サポート</div>
+    </div>
+    <div class="price-card">
+      <div class="price-plan">エンタープライズ</div>
+      <div class="price-amount" style="font-size:15px;padding-top:6px;">要お問い合わせ</div>
+      <div class="price-unit"> </div>
+      <div class="price-line"></div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#0F6E56" stroke-width="1.2"/></svg></div>SSO / 権限管理</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#0F6E56" stroke-width="1.2"/></svg></div>専任サポート</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#0F6E56" stroke-width="1.2"/></svg></div>カスタム連携</div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-eyebrow">よくある質問</div>
+  <div class="sec-h">導入前の不安を<br>まとめて解消します</div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q"><span class="faq-qmark">Q</span>無料プランでどこまで使えますか？</div>
+      <div class="faq-a">3プロジェクトまで、基本的な検収機能はすべて無料でお使いいただけます。クレジットカードの登録も不要です。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="faq-qmark">Q</span>クライアントにもアカウントが必要ですか？</div>
+      <div class="faq-a">不要です。URLを共有するだけでアカウント登録なしに確認・承認が可能です。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="faq-qmark">Q</span>SlackやChatworkと併用できますか？</div>
+      <div class="faq-a">はい。通知連携に対応しています。これまでのツールはそのまま使いながら、管理だけ一元化できます。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="faq-qmark">Q</span>途中で解約できますか？</div>
+      <div class="faq-a">いつでもキャンセル可能です。契約期間の縛りや違約金はありません。</div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-final">
+  <div class="sec-eyebrow" style="margin-bottom:12px;">今すぐ始める</div>
+  <div class="cta-final-h">検収の「あるある」から、<br>今日解放されませんか？</div>
+  <div class="cta-final-s">2分で無料アカウントを作成できます。<br>まずはプロジェクト1つから試してみてください。</div>
+  <div class="cta-group">
+    <button class="btn-primary" style="font-size:14px;padding:13px 28px;">無料で始める</button>
+    <div class="cta-note">クレジットカード不要・いつでもキャンセル可</div>
+    <div class="cta-link">まずは話を聞きたい方 → お問い合わせはこちら</div>
+  </div>
+</div>
+
+</div>
