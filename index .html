@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenshu — 検収管理ツール</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --blue-mid: #B5D4F4;
+    --blue-dark: #0C447C;
+    --green: #1D9E75;
+    --green-light: #E1F5EE;
+    --green-mid: #9FE1CB;
+    --green-dark: #085041;
+    --amber: #EF9F27;
+    --amber-light: #FAEEDA;
+    --amber-mid: #FAC775;
+    --amber-dark: #633806;
+    --red: #E24B4A;
+    --gray-900: #1A1A1A;
+    --gray-700: #3D3D3D;
+    --gray-500: #6B6B6B;
+    --gray-300: #C4C4C4;
+    --gray-100: #F5F5F5;
+    --gray-50: #FAFAFA;
+    --white: #FFFFFF;
+    --border: #E4E4E4;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --font: 'Noto Sans JP', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); color: var(--gray-900); background: var(--white); -webkit-font-smoothing: antialiased; }
+
+  /* NAV */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 56px;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-size: 15px; font-weight: 700; color: var(--gray-900); }
+  .nav-logo span { font-size: 11px; font-weight: 400; color: var(--gray-500); margin-left: 6px; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { font-size: 13px; color: var(--gray-500); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--blue); }
+  .nav-cta { font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: var(--radius-md); background: var(--blue); color: var(--white); border: none; cursor: pointer; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--blue-dark); }
+
+  /* HERO */
+  .hero {
+    padding: 72px 40px 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #F0F7FF 0%, #FFFFFF 60%);
+  }
+  .hero-eyebrow { font-size: 12px; font-weight: 500; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 16px; }
+  .hero-h { font-size: 36px; font-weight: 700; line-height: 1.3; margin-bottom: 16px; color: var(--gray-900); }
+  .hero-h em { font-style: normal; color: var(--blue); }
+  .hero-sub { font-size: 15px; color: var(--gray-500); line-height: 1.8; margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  .btn-primary { font-size: 14px; font-weight: 500; padding: 13px 26px; border-radius: var(--radius-md); background: var(--blue); color: var(--white); border: none; cursor: pointer; transition: background 0.2s, transform 0.1s; font-family: var(--font); }
+  .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+  .btn-ghost { font-size: 14px; font-weight: 500; padding: 13px 26px; border-radius: var(--radius-md); background: var(--white); color: var(--gray-700); border: 1px solid var(--border); cursor: pointer; transition: border-color 0.2s, background 0.2s; font-family: var(--font); }
+  .btn-ghost:hover { border-color: var(--blue); background: var(--blue-light); }
+  .hero-note { font-size: 12px; color: var(--gray-300); margin-bottom: 40px; }
+
+  /* VIDEO MOCK */
+  .video-wrap {
+    max-width: 580px; margin: 0 auto;
+    border-radius: var(--radius-lg); overflow: hidden;
+    border: 1px solid #2A3D55;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    background: #0C1929;
+  }
+  .v-topbar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #0C1929; border-bottom: 1px solid #1A2D45; }
+  .v-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .v-label { font-size: 11px; color: #5F7A99; margin-left: 6px; }
+  .v-screen { padding: 16px; }
+  .v-task-add { background: #1A2D45; border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .v-plus { width: 22px; height: 22px; border-radius: 5px; background: var(--blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; color: white; line-height: 1; }
+  .v-input-t { font-size: 12px; color: #8BAAC4; font-family: var(--font); }
+  .v-tasks { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+  .v-task { background: #1A2D45; border-radius: var(--radius-sm); padding: 9px 12px; display: flex; align-items: center; gap: 8px; }
+  .v-st { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 99px; white-space: nowrap; }
+  .v-st-d { background: #0F4A36; color: #5DCAA5; }
+  .v-st-w { background: #4A3200; color: #EF9F27; }
+  .v-st-n { background: #243F5A; color: #5F7A99; }
+  .v-tname { font-size: 11px; color: #B5CFEA; flex: 1; font-family: var(--font); }
+  .v-av { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 500; flex-shrink: 0; }
+  .v-comment { background: #1E3A55; border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 0; }
+  .v-comment-label { font-size: 10px; color: #5F7A99; margin-bottom: 8px; }
+  .v-comment-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+  .v-comment-row:last-child { margin-bottom: 0; }
+  .v-bubble { background: #243F5A; border-radius: 8px; padding: 6px 10px; flex: 1; }
+  .v-bubble-t { font-size: 11px; color: #8BAAC4; line-height: 1.5; font-family: var(--font); }
+  .v-bubble-name { font-size: 10px; color: #5F7A99; margin-top: 4px; }
+  .v-bubble-blue { background: #185FA5; border-radius: 8px; padding: 6px 10px; }
+  .v-bubble-blue-t { font-size: 11px; color: #E6F1FB; line-height: 1.5; font-family: var(--font); }
+  .v-row-right { flex-direction: row-reverse; }
+  .v-overlay { background: rgba(0,0,0,0.6); padding: 16px; text-align: center; }
+  .play-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; cursor: pointer; transition: transform 0.2s; }
+  .play-circle:hover { transform: scale(1.1); }
+  .play-tri { width: 0; height: 0; border-top: 11px solid transparent; border-bottom: 11px solid transparent; border-left: 18px solid var(--white); margin-left: 5px; }
+  .v-caption { font-size: 12px; color: #8BAAC4; line-height: 1.6; }
+  .v-caption strong { color: #B5CFEA; font-weight: 500; }
+
+  /* SECTIONS */
+  .sec { padding: 60px 40px; border-bottom: 1px solid var(--border); }
+  .sec-eyebrow { font-size: 12px; font-weight: 500; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 10px; }
+  .sec-h { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; color: var(--gray-900); }
+  .sec-sub { font-size: 14px; color: var(--gray-500); line-height: 1.8; margin-bottom: 32px; }
+
+  /* PROBLEM */
+  .prob-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .prob-card { background: #FFFBF5; border-radius: var(--radius-lg); padding: 24px; border: 1px solid #FAC775; }
+  .prob-num { font-size: 11px; font-weight: 500; color: var(--amber-dark); margin-bottom: 10px; letter-spacing: 0.05em; }
+  .prob-q { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; line-height: 1.5; }
+  .prob-a { font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+
+  /* BRIDGE */
+  .bridge { text-align: center; padding: 28px 40px; background: var(--blue-light); border-bottom: 1px solid var(--blue-mid); }
+  .bridge-t { font-size: 18px; font-weight: 700; color: var(--blue-dark); }
+  .bridge-s { font-size: 13px; color: var(--blue); margin-top: 6px; }
+
+  /* SOLUTION */
+  .sol-flow { display: flex; flex-direction: column; gap: 16px; }
+  .sol-row { display: grid; grid-template-columns: 1fr 48px 1fr; align-items: center; gap: 0; }
+  .sol-problem { background: var(--amber-light); border-radius: var(--radius-lg); padding: 20px; border: 1px solid var(--amber-mid); }
+  .sol-solution { background: var(--green-light); border-radius: var(--radius-lg); padding: 20px; border: 1px solid var(--green-mid); }
+  .sol-label { font-size: 11px; font-weight: 500; margin-bottom: 12px; }
+  .sol-label-p { color: var(--amber-dark); }
+  .sol-label-s { color: var(--green-dark); }
+  .sol-icon { margin-bottom: 10px; }
+  .sol-title { font-size: 14px; font-weight: 700; line-height: 1.4; margin-bottom: 5px; }
+  .sol-title-p { color: var(--amber-dark); }
+  .sol-title-s { color: var(--green-dark); }
+  .sol-desc { font-size: 12px; line-height: 1.6; }
+  .sol-desc-p { color: #854F0B; }
+  .sol-desc-s { color: var(--green-dark); }
+  .sol-arrow { display: flex; align-items: center; justify-content: center; }
+
+  /* INLINE CTA */
+  .inline-cta { text-align: center; padding: 40px; background: var(--gray-50); border-bottom: 1px solid var(--border); }
+  .inline-cta-t { font-size: 14px; color: var(--gray-500); margin-bottom: 16px; }
+
+  /* FEATURES */
+  .feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .feat-card { background: var(--white); border-radius: var(--radius-lg); padding: 20px; border: 1px solid var(--border); transition: box-shadow 0.2s; }
+  .feat-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .feat-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--green-light); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .feat-icon svg { width: 18px; height: 18px; }
+  .feat-title { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+  .feat-merit { font-size: 12px; font-weight: 500; color: var(--green); margin-bottom: 6px; }
+  .feat-desc { font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+
+  /* PRICING */
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .price-card { background: var(--white); border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border); }
+  .price-pop { border: 2px solid var(--blue); box-shadow: 0 4px 24px rgba(24,95,165,0.12); }
+  .price-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 99px; background: var(--blue-light); color: var(--blue-dark); display: inline-block; margin-bottom: 10px; }
+  .price-plan { font-size: 13px; color: var(--gray-500); margin-bottom: 4px; }
+  .price-amount { font-size: 32px; font-weight: 700; color: var(--gray-900); line-height: 1; }
+  .price-unit { font-size: 12px; color: var(--gray-300); margin-top: 4px; margin-bottom: 16px; }
+  .price-line { height: 1px; background: var(--border); margin-bottom: 14px; }
+  .price-item { font-size: 13px; color: var(--gray-500); padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+  .chk { width: 16px; height: 16px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .chk svg { width: 9px; height: 9px; }
+
+  /* FAQ */
+  .faq-list { display: flex; flex-direction: column; gap: 0; }
+  .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+  .faq-q { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; display: flex; align-items: flex-start; gap: 10px; }
+  .faq-qmark { font-size: 11px; font-weight: 700; color: var(--blue); background: var(--blue-light); padding: 3px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+  .faq-a { font-size: 13px; color: var(--gray-500); line-height: 1.8; padding-left: 34px; }
+
+  /* FINAL CTA */
+  .cta-final { padding: 80px 40px; text-align: center; background: linear-gradient(180deg, #F0F7FF 0%, #FFFFFF 100%); }
+  .cta-eyebrow { font-size: 12px; font-weight: 500; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 16px; }
+  .cta-h { font-size: 28px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+  .cta-s { font-size: 14px; color: var(--gray-500); line-height: 1.8; margin-bottom: 32px; }
+  .cta-note { font-size: 12px; color: var(--gray-300); margin-top: 10px; }
+  .cta-link { font-size: 13px; color: var(--blue); margin-top: 12px; text-decoration: none; display: block; }
+  .cta-link:hover { text-decoration: underline; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 48px 20px 40px; }
+    .hero-h { font-size: 26px; }
+    .sec { padding: 48px 20px; }
+    .prob-grid { grid-template-columns: 1fr; }
+    .sol-row { grid-template-columns: 1fr 36px 1fr; }
+    .feat-grid { grid-template-columns: repeat(2, 1fr); }
+    .price-grid { grid-template-columns: 1fr; }
+    .bridge { padding: 24px 20px; }
+    .inline-cta { padding: 32px 20px; }
+    .cta-final { padding: 56px 20px; }
+  }
+  @media (max-width: 600px) {
+    .hero-h { font-size: 22px; }
+    .sec-h { font-size: 20px; }
+    .sol-row { grid-template-columns: 1fr; }
+    .sol-arrow { transform: rotate(90deg); padding: 8px 0; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-ghost { width: 100%; max-width: 320px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">Kenshu <span>検収管理ツール</span></div>
+  <div class="nav-links">
+    <a href="#features">機能</a>
+    <a href="#pricing">料金</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <button class="nav-cta" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">無料で始める</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Web制作・制作進行担当者向け</div>
+  <h1 class="hero-h">修正指示の<em>対応漏れ</em>と<br><em>確認の往復</em>を、なくす。</h1>
+  <p class="hero-sub">タスク追加からクライアント承認まで、一画面で完結。<br>スプレッドシートとチャットの二重管理から解放されます。</p>
+  <div class="hero-btns">
+    <button class="btn-primary">無料アカウントを作成する</button>
+    <button class="btn-ghost">▶ デモを見る（30秒）</button>
+  </div>
+  <div class="hero-note">クレジットカード不要・2分で開始・いつでもキャンセル可</div>
+
+  <div class="video-wrap">
+    <div class="v-topbar">
+      <div class="v-dot" style="background:#F09595;"></div>
+      <div class="v-dot" style="background:#EF9F27;"></div>
+      <div class="v-dot" style="background:#97C459;"></div>
+      <div class="v-label">A社コーポレートサイト — 検収タスク</div>
+    </div>
+    <div class="v-screen">
+      <div class="v-task-add">
+        <div class="v-plus">+</div>
+        <span class="v-input-t">「TOPのキャッチコピー修正」を追加中...</span>
+      </div>
+      <div class="v-tasks">
+        <div class="v-task">
+          <span class="v-st v-st-d">完了</span>
+          <span class="v-tname">ファーストビュー 画像差し替え</span>
+          <div class="v-av" style="background:#1A4A7A;color:#85B7EB;">田</div>
+        </div>
+        <div class="v-task">
+          <span class="v-st v-st-w">対応中</span>
+          <span class="v-tname">会社概要 テキスト修正（3箇所）</span>
+          <div class="v-av" style="background:#3A2A00;color:#EF9F27;">鈴</div>
+        </div>
+        <div class="v-task">
+          <span class="v-st v-st-n">未対応</span>
+          <span class="v-tname">SP表示 ナビゲーション崩れ</span>
+          <div class="v-av" style="background:#1A4A7A;color:#85B7EB;">山</div>
+        </div>
+      </div>
+      <div class="v-comment">
+        <div class="v-comment-label">コメント — 会社概要 テキスト修正</div>
+        <div class="v-comment-row">
+          <div class="v-av" style="background:#3A2A00;color:#EF9F27;flex-shrink:0;">鈴</div>
+          <div class="v-bubble">
+            <div class="v-bubble-t">修正しました。3箇所とも対応済みです。ご確認お願いします。</div>
+            <div class="v-bubble-name">鈴木（担当）</div>
+          </div>
+        </div>
+        <div class="v-comment-row v-row-right">
+          <div class="v-av" style="background:#1A4A7A;color:#85B7EB;flex-shrink:0;">田</div>
+          <div class="v-bubble-blue">
+            <div class="v-bubble-blue-t">確認しました。OKです。承認します！</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="v-overlay">
+      <div class="play-circle">
+        <div class="play-tri"></div>
+      </div>
+      <div class="v-caption"><strong>デモ動画（約30秒）</strong><br>タスク追加 → 担当者への通知 → コメントでやり取り → 承認まで</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="sec">
+  <div class="sec-eyebrow">こんな問題、ありませんか？</div>
+  <h2 class="sec-h">検収業務の「あるある」<br>心当たりありませんか？</h2>
+  <p class="sec-sub">現場で毎回起きているこの状況。実はツール1つで防げます。</p>
+  <div class="prob-grid">
+    <div class="prob-card">
+      <div class="prob-num">問題 01</div>
+      <div class="prob-q">スプレッドシートのどこに書いたか分からなくなる</div>
+      <div class="prob-a">列が増えるたびに「あの修正、どこだっけ？」が発生。管理が追いつかなくなる。</div>
+    </div>
+    <div class="prob-card">
+      <div class="prob-num">問題 02</div>
+      <div class="prob-q">対応済みか未対応か、確認のたびに往復する</div>
+      <div class="prob-a">チャットとシートが別管理で確認コストが二重にかかる。毎回聞くのも気まずい。</div>
+    </div>
+    <div class="prob-card">
+      <div class="prob-num">問題 03</div>
+      <div class="prob-q">対応漏れがリリース直前に発覚する</div>
+      <div class="prob-a">誰も確認していなかった修正が、公開後にクレームに。信頼を失うリスクが残る。</div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<div class="bridge">
+  <div class="bridge-t">その全部、1つのツールで解決できます。</div>
+  <div class="bridge-s">タスク追加・ステータス管理・クライアント承認まで一画面で完結</div>
+</div>
+
+<!-- SOLUTION -->
+<section class="sec">
+  <div class="sec-eyebrow">ソリューション</div>
+  <h2 class="sec-h">課題ごとに、どう解決するか</h2>
+  <p class="sec-sub">「なんとなく便利」ではなく、現場の問題に直接対応します。</p>
+  <div class="sol-flow">
+
+    <div class="sol-row">
+      <div class="sol-problem">
+        <div class="sol-label sol-label-p">課題</div>
+        <div class="sol-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="4" y="6" width="32" height="28" rx="4" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+            <line x1="4" y1="14" x2="36" y2="14" stroke="#EF9F27" stroke-width="1.2"/>
+            <rect x="8" y="18" width="8" height="5" rx="1.5" fill="#FAC775"/>
+            <rect x="18" y="18" width="8" height="5" rx="1.5" fill="#FAC775"/>
+            <rect x="28" y="18" width="6" height="5" rx="1.5" fill="#FAC775"/>
+            <rect x="8" y="25" width="10" height="5" rx="1.5" fill="#FAC775"/>
+            <rect x="20" y="25" width="14" height="5" rx="1.5" fill="#FAC775"/>
+            <circle cx="32" cy="32" r="7" fill="#E24B4A"/>
+            <line x1="29.5" y1="32" x2="34.5" y2="32" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sol-title sol-title-p">スプレッドシートに埋もれる</div>
+        <div class="sol-desc sol-desc-p">列が増え続け、どこに何があるか分からない状態に</div>
+      </div>
+      <div class="sol-arrow">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 14h16M18 8l6 6-6 6" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="sol-solution">
+        <div class="sol-label sol-label-s">解決</div>
+        <div class="sol-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="4" y="4" width="32" height="32" rx="4" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1.5"/>
+            <rect x="8" y="11" width="24" height="6" rx="2" fill="#9FE1CB"/>
+            <circle cx="13" cy="14" r="2.5" fill="#1D9E75"/>
+            <rect x="8" y="19" width="24" height="6" rx="2" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="1"/>
+            <circle cx="13" cy="22" r="2.5" fill="#EF9F27"/>
+            <rect x="8" y="27" width="24" height="6" rx="2" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="1"/>
+            <circle cx="13" cy="30" r="2.5" fill="#B4B2A9"/>
+          </svg>
+        </div>
+        <div class="sol-title sol-title-s">一覧でステータスが一目瞭然</div>
+        <div class="sol-desc sol-desc-s">全タスクの状態がリアルタイムで見える</div>
+      </div>
+    </div>
+
+    <div class="sol-row">
+      <div class="sol-problem">
+        <div class="sol-label sol-label-p">課題</div>
+        <div class="sol-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="3" y="8" width="20" height="15" rx="3" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+            <line x1="7" y1="14" x2="19" y2="14" stroke="#FAC775" stroke-width="1.2"/>
+            <line x1="7" y1="18" x2="16" y2="18" stroke="#FAC775" stroke-width="1.2"/>
+            <rect x="17" y="17" width="20" height="15" rx="3" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+            <line x1="21" y1="23" x2="33" y2="23" stroke="#FAC775" stroke-width="1.2"/>
+            <line x1="21" y1="27" x2="30" y2="27" stroke="#FAC775" stroke-width="1.2"/>
+            <circle cx="14" cy="24" r="6" fill="#E24B4A"/>
+            <path d="M11.5 24l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sol-title sol-title-p">チャットとシートが分散</div>
+        <div class="sol-desc sol-desc-p">やり取りと管理が別々で確認コストが二重にかかる</div>
+      </div>
+      <div class="sol-arrow">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 14h16M18 8l6 6-6 6" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="sol-solution">
+        <div class="sol-label sol-label-s">解決</div>
+        <div class="sol-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="4" y="4" width="32" height="32" rx="4" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1.5"/>
+            <rect x="8" y="10" width="24" height="7" rx="2" fill="#9FE1CB"/>
+            <rect x="10" y="20" width="15" height="5" rx="2" fill="#5DCAA5"/>
+            <rect x="17" y="27" width="15" height="5" rx="2" fill="#1D9E75"/>
+            <circle cx="32" cy="8" r="6" fill="#185FA5"/>
+            <path d="M29.5 8l2 2 3.5-3.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sol-title sol-title-s">タスクにコメントが紐づく</div>
+        <div class="sol-desc sol-desc-s">修正内容とやり取りが同じ場所に集約される</div>
+      </div>
+    </div>
+
+    <div class="sol-row">
+      <div class="sol-problem">
+        <div class="sol-label sol-label-p">課題</div>
+        <div class="sol-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="14" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+            <line x1="20" y1="10" x2="20" y2="20" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+            <line x1="20" y1="20" x2="26" y2="25" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="2" fill="#E24B4A"/>
+            <circle cx="33" cy="33" r="5" fill="#E24B4A"/>
+            <line x1="31" y1="33" x2="35" y2="33" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="33" y1="31" x2="33" y2="35" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sol-title sol-title-p">対応漏れが直前に発覚</div>
+        <div class="sol-desc sol-desc-p">誰も把握していないタスクが公開後に問題になる</div>
+      </div>
+      <div class="sol-arrow">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 14h16M18 8l6 6-6 6" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="sol-solution">
+        <div class="sol-label sol-label-s">解決</div>
+        <div class="sol-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="14" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1.5"/>
+            <path d="M13 20l5 5 10-10" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="32" cy="8" r="6" fill="#185FA5"/>
+            <path d="M29.5 8l2 2 3.5-3.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sol-title sol-title-s">承認で全完了を確認</div>
+        <div class="sol-desc sol-desc-s">クライアント承認まで完結、抜け漏れゼロで納品できる</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INLINE CTA -->
+<div class="inline-cta">
+  <div class="inline-cta-t">課題に共感したら、まず無料で試してみてください。</div>
+  <button class="btn-primary">無料アカウントを作成 — クレジットカード不要</button>
+</div>
+
+<!-- FEATURES -->
+<section class="sec" id="features">
+  <div class="sec-eyebrow">機能</div>
+  <h2 class="sec-h">機能じゃなく、<br>「得られる変化」で選んでください</h2>
+  <p class="sec-sub">使い始めた翌日から、チームの動き方が変わります。</p>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 18 18" fill="none"><rect x="1" y="1" width="16" height="16" rx="3" stroke="#0F6E56" stroke-width="1.4"/><line x1="9" y1="5" x2="9" y2="13" stroke="#0F6E56" stroke-width="1.4"/><line x1="5" y1="9" x2="13" y2="9" stroke="#0F6E56" stroke-width="1.4"/></svg>
+      </div>
+      <div class="feat-title">かんたんタスク登録</div>
+      <div class="feat-merit">→ 修正指示の漏れがなくなる</div>
+      <div class="feat-desc">その場で入力・画像添付・担当者設定。スプレッドシートを開く必要なし。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#0F6E56" stroke-width="1.4"/><path d="M6 9l2.5 2.5 4-4" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="feat-title">リアルタイムステータス</div>
+      <div class="feat-merit">→ 確認の往復が不要になる</div>
+      <div class="feat-desc">未対応・対応中・完了を一覧表示。「今どこ？」を聞く必要がなくなる。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M2 5h14M2 9h10M2 13h12" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="feat-title">タスク紐づきコメント</div>
+      <div class="feat-merit">→ 会話が迷子にならない</div>
+      <div class="feat-desc">修正内容とやり取りが同じ場所に。チャットを探し回る時間がゼロに。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 5h5.2l-4.2 3 1.8 5L9 12l-4.6 3 1.8-5L2 7h5.2z" stroke="#0F6E56" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="feat-title">クライアント承認フロー</div>
+      <div class="feat-merit">→ メール往復が不要になる</div>
+      <div class="feat-desc">リンクを送るだけ。アカウント不要でクライアントが確認・承認できる。</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec" id="pricing" style="background:#FAFAFA;">
+  <div class="sec-eyebrow">料金</div>
+  <h2 class="sec-h">まず無料で試して、<br>必要なら広げてください</h2>
+  <p class="sec-sub">小規模チームから大規模運用まで、段階的に使えます。</p>
+  <div class="price-grid">
+    <div class="price-card">
+      <div class="price-plan">フリー</div>
+      <div class="price-amount">¥0</div>
+      <div class="price-unit">ずっと無料</div>
+      <div class="price-line"></div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>3プロジェクトまで</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>基本機能すべて</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>CC不要で開始</div>
+    </div>
+    <div class="price-card price-pop">
+      <div class="price-badge">人気プラン</div>
+      <div class="price-plan">スタンダード</div>
+      <div class="price-amount">¥2,980</div>
+      <div class="price-unit">/ 月・ユーザーあたり</div>
+      <div class="price-line"></div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>プロジェクト無制限</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>承認ワークフロー</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>優先サポート</div>
+    </div>
+    <div class="price-card">
+      <div class="price-plan">エンタープライズ</div>
+      <div class="price-amount" style="font-size:20px;padding-top:8px;">要お問い合わせ</div>
+      <div class="price-unit">&nbsp;</div>
+      <div class="price-line"></div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>SSO / 権限管理</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>専任サポート</div>
+      <div class="price-item"><div class="chk"><svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3.5-3.5" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>カスタム連携</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="sec-eyebrow">よくある質問</div>
+  <h2 class="sec-h">導入前の不安を<br>まとめて解消します</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q"><span class="faq-qmark">Q</span>無料プランでどこまで使えますか？</div>
+      <div class="faq-a">3プロジェクトまで、基本的な検収機能はすべて無料でお使いいただけます。クレジットカードの登録も不要です。まずは実務で試してみてください。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="faq-qmark">Q</span>クライアントにもアカウントが必要ですか？</div>
+      <div class="faq-a">不要です。URLを共有するだけで、クライアントはアカウント登録なしに確認・承認が可能です。クライアントへの説明コストがかかりません。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="faq-qmark">Q</span>SlackやChatworkと併用できますか？</div>
+      <div class="faq-a">はい。Slack・Chatworkとの通知連携に対応しています。これまでのツールはそのまま使いながら、管理だけを一元化できます。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="faq-qmark">Q</span>途中で解約できますか？</div>
+      <div class="faq-a">いつでもキャンセル可能です。契約期間の縛りや違約金はありません。</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-final">
+  <div class="cta-eyebrow">今すぐ始める</div>
+  <h2 class="cta-h">検収の「あるある」から、<br>今日解放されませんか？</h2>
+  <p class="cta-s">2分で無料アカウントを作成できます。<br>まずはプロジェクト1つから試してみてください。</p>
+  <button class="btn-primary" style="font-size:15px;padding:15px 32px;">無料で始める</button>
+  <div class="cta-note">クレジットカード不要・いつでもキャンセル可</div>
+  <a href="#" class="cta-link">まずは話を聞きたい方 → お問い合わせはこちら</a>
+</section>
+
+</body>
+</html>
